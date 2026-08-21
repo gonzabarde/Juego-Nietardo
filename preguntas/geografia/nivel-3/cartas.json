@@ -1,0 +1,28 @@
+{
+  "materia_id": "geografia",
+  "materia": "Geografía",
+  "nivel": 3,
+  "puntos": 3,
+  "cartas": [
+    {
+      "id": 1,
+      "pregunta": "¿Qué corriente oceánica influye en el clima de la costa argentina?",
+      "respuesta": "Corriente de Brasil (cálida) y Corriente Fría de Malvinas"
+    },
+    {
+      "id": 2,
+      "pregunta": "¿Cuál es la capital de Australia?",
+      "respuesta": "Canberra"
+    },
+    {
+      "id": 3,
+      "pregunta": "¿Qué es la línea de Wallace?",
+      "respuesta": "Límite biogeográfico entre fauna asiática y australiana"
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Qué provincia argentina tiene la mayor superficie?",
+      "respuesta": "Buenos Aires"
+    }
+  ]
+}

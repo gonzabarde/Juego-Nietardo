@@ -1,0 +1,28 @@
+{
+  "materia_id": "civica",
+  "materia": "Educación Cívica",
+  "nivel": 3,
+  "puntos": 3,
+  "cartas": [
+    {
+      "id": 1,
+      "pregunta": "¿Qué reforma constitucional permitió reelección en Argentina en 1994?",
+      "respuesta": "Reforma de 1994 (Constitución en Santa Fe)"
+    },
+    {
+      "id": 2,
+      "pregunta": "¿Qué es el federalismo argentino?",
+      "respuesta": "División de poder entre Nación y provincias"
+    },
+    {
+      "id": 3,
+      "pregunta": "¿Qué organismo controla elecciones en Argentina?",
+      "respuesta": "La Cámara Nacional Electoral / justicia electoral"
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Qué artículo de la Constitución garantiza la libertad de expresión?",
+      "respuesta": "Artículo 14 (entre otros)"
+    }
+  ]
+}

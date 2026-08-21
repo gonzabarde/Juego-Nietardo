@@ -1,0 +1,28 @@
+{
+  "materia_id": "lengua",
+  "materia": "Lengua y Literatura",
+  "nivel": 1,
+  "puntos": 1,
+  "cartas": [
+    {
+      "id": 1,
+      "pregunta": "¿Qué signo de puntuación cierra una pregunta?",
+      "respuesta": "El signo de interrogación (¿?)"
+    },
+    {
+      "id": 2,
+      "pregunta": "¿Quién escribió El principito?",
+      "respuesta": "Antoine de Saint-Exupéry"
+    },
+    {
+      "id": 3,
+      "pregunta": "¿Cuál es el plural de «luz»?",
+      "respuesta": "Luces"
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Qué es un sustantivo?",
+      "respuesta": "Palabra que nombra personas, cosas, lugares o ideas"
+    }
+  ]
+}

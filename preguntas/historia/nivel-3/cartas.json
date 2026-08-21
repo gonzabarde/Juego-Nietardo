@@ -1,0 +1,28 @@
+{
+  "materia_id": "historia",
+  "materia": "Historia",
+  "nivel": 3,
+  "puntos": 3,
+  "cartas": [
+    {
+      "id": 1,
+      "pregunta": "¿Qué acuerdo entre Rosas y Urquiza terminó con su dominio en 1852?",
+      "respuesta": "Pacto de San Nicolás / derrota en Caseros"
+    },
+    {
+      "id": 2,
+      "pregunta": "¿En qué batalla San Martín cruzó los Andes hacia Chile?",
+      "respuesta": "Campaña de 1817 (batalla de Chacabuco)"
+    },
+    {
+      "id": 3,
+      "pregunta": "¿Qué fue la Revolución Rusa de 1917?",
+      "respuesta": "Derrocamiento del zarismo e inicio del régimen soviético"
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Quién fue el líder del peronismo en su origen?",
+      "respuesta": "Juan Domingo Perón"
+    }
+  ]
+}
