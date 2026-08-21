@@ -1,0 +1,30 @@
+// Base — Jenga de Cultura General
+BASE_L = 90;
+BASE_W = 90;
+BASE_H = 8;
+RIM = 3;
+
+module base() {
+  difference() {
+    cube([BASE_L, BASE_W, BASE_H]);
+    translate([RIM, RIM, BASE_H - 2])
+      cube([BASE_L - 2*RIM, BASE_W - 2*RIM, 3]);
+    translate([BASE_L/2, BASE_W/2, BASE_H - 1])
+      linear_extrude(height = 1.5)
+        text("JENGA", size = 7, halign = "center", valign = "center",
+             font = "Liberation Sans:style=Bold");
+    translate([BASE_L/2, BASE_W/2 - 10, BASE_H - 1])
+      linear_extrude(height = 1.5)
+        text("CULTURA", size = 5, halign = "center", valign = "center",
+             font = "Liberation Sans:style=Bold");
+  }
+
+  for (i = [0:3]) {
+    translate([10 + i * 20, 5, BASE_H])
+      cube([15, 8, 4 + i]);
+    translate([10 + i * 20, BASE_W - 13, BASE_H])
+      cube([15, 8, 3 + (3 - i)]);
+  }
+}
+
+base();
