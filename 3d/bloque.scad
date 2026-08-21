@@ -1,7 +1,7 @@
 // Bloque Jenga — Jenga de Cultura General
 // Medidas estándar: 75 x 25 x 15 mm
 // Cambiar MATERIA y NIVEL antes de exportar cada STL
-// NIVEL 1 = color claro | 2 = medio | 3 = intenso (ver datos/juego.json)
+// NIVEL 1 = color claro | 2 = medio | 3 = intenso (ver datos/Materias_y_Bloques.pdf)
 
 BLOCK_L = 75;
 BLOCK_W = 25;
