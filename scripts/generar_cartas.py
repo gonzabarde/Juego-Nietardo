@@ -116,21 +116,32 @@ def draw_card_front(pdf: FPDF, x: float, y: float, carta: dict, mazo: dict, rgb:
     pdf.set_xy(x + 6, y + scale_h(18))
     pdf.cell(CARD_W - 12, 5, f"Nivel {mazo['nivel']} · {mazo['puntos']} pt{'s' if mazo['puntos'] > 1 else ''}", align="C")
 
+    # Zonas fijas: pregunta arriba, respuesta abajo (sin solaparse)
+    answer_zone_h = scale_h(16)
+    bottom_pad = scale_h(4)
+    answer_y = y + CARD_H - bottom_pad - answer_zone_h
+    sep_y = answer_y - scale_h(2.5)
+
+    q_box_x = x + 8
+    q_box_w = CARD_W - 16
+    q_box_top = y + scale_h(26)
+    q_box_h = max(scale_h(20), sep_y - q_box_top - scale_h(1))
+
     pdf.set_draw_color(*rgb)
     pdf.set_line_width(0.25)
-    pdf.rect(x + 8, y + scale_h(28), CARD_W - 16, CARD_H - scale_h(42))
+    pdf.rect(q_box_x, q_box_top, q_box_w, q_box_h)
 
     pdf.set_font("DejaVu", "", 9.5)
-    pdf.set_xy(x + 10, y + scale_h(32))
-    pdf.multi_cell(CARD_W - 20, 4.8, carta["pregunta"], align="C")
+    pdf.set_text_color(40, 40, 40)
+    pdf.set_xy(q_box_x + 2, q_box_top + scale_h(3))
+    pdf.multi_cell(q_box_w - 4, 4.6, carta["pregunta"], align="C")
 
-    pdf.set_draw_color(*rgb)
     pdf.set_line_width(0.2)
-    pdf.line(x + 10, y + CARD_H - scale_h(17), x + CARD_W - 10, y + CARD_H - scale_h(17))
+    pdf.line(x + 10, sep_y, x + CARD_W - 10, sep_y)
 
     pdf.set_font("DejaVu", "", 6)
     pdf.set_text_color(70, 70, 70)
-    pdf.set_xy(x + 6, y + CARD_H - scale_h(15))
+    pdf.set_xy(x + 6, answer_y)
     pdf.multi_cell(CARD_W - 12, 3, carta["respuesta"], align="C")
 
 
