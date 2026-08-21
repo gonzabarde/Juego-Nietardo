@@ -117,32 +117,35 @@ def draw_card_front(pdf: FPDF, x: float, y: float, carta: dict, mazo: dict, rgb:
     pdf.set_xy(x + 10, y + 32)
     pdf.multi_cell(CARD_W - 20, 4.2, carta["pregunta"], align="C")
 
-    pdf.set_font("DejaVu", "I", 6)
-    pdf.set_text_color(120, 120, 120)
-    pdf.set_xy(x + 6, y + CARD_H - 9)
-    pdf.cell(CARD_W - 12, 4, "Jenga de Cultura General", align="C")
+    # Respuesta chica, centrada abajo (la ve quien lee la carta)
+    pdf.set_draw_color(*rgb)
+    pdf.set_line_width(0.2)
+    pdf.line(x + 10, y + CARD_H - 17, x + CARD_W - 10, y + CARD_H - 17)
+
+    pdf.set_font("DejaVu", "", 5.2)
+    pdf.set_text_color(70, 70, 70)
+    pdf.set_xy(x + 6, y + CARD_H - 15)
+    pdf.multi_cell(CARD_W - 12, 2.6, carta["respuesta"], align="C")
 
 
 def draw_card_back(pdf: FPDF, x: float, y: float, carta: dict, mazo: dict, rgb: tuple[int, int, int], label: str):
     draw_card_frame(pdf, x, y, rgb, label, carta["id"])
 
-    pdf.set_fill_color(min(255, rgb[0] + 180), min(255, rgb[1] + 180), min(255, rgb[2] + 180))
+    # Dorso decorativo (la respuesta va en chico abajo del frente)
+    pdf.set_fill_color(min(255, rgb[0] + 190), min(255, rgb[1] + 190), min(255, rgb[2] + 190))
     pdf.rect(x + 8, y + 18, CARD_W - 16, CARD_H - 32, style="F")
 
+    pdf.set_draw_color(*rgb)
+    pdf.set_line_width(0.2)
+    cx, cy = x + CARD_W / 2, y + CARD_H / 2 - 2
+    for i in range(-2, 3):
+        pdf.line(cx - 14, cy + i * 5, cx + 14, cy + i * 5)
+        pdf.line(cx + i * 5, cy - 14, cx + i * 5, cy + 14)
+
+    pdf.set_font("DejaVu", "B", 11)
     pdf.set_text_color(*rgb)
-    pdf.set_font("DejaVu", "B", 8)
-    pdf.set_xy(x + 8, y + 22)
-    pdf.cell(CARD_W - 16, 5, "RESPUESTA", align="C")
-
-    pdf.set_text_color(30, 30, 30)
-    pdf.set_font("DejaVu", "", 8)
-    pdf.set_xy(x + 10, y + 30)
-    pdf.multi_cell(CARD_W - 20, 4.2, carta["respuesta"], align="C")
-
-    pdf.set_font("DejaVu", "I", 6)
-    pdf.set_text_color(100, 100, 100)
-    pdf.set_xy(x + 6, y + CARD_H - 9)
-    pdf.cell(CARD_W - 12, 4, f"{mazo['materia']} · N{mazo['nivel']}", align="C")
+    pdf.set_xy(x + 6, y + CARD_H / 2 - 6)
+    pdf.cell(CARD_W - 12, 8, label, align="C")
 
 
 def materia_label(materia_id: str) -> str:
