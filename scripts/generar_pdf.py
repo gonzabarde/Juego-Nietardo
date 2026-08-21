@@ -1,17 +1,35 @@
 #!/usr/bin/env python3
 """Genera el PDF de reglas de Jenga de Cultura General (máx. 1,5 hojas A4)."""
 
-import json
 from pathlib import Path
 
 from fpdf import FPDF
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA = json.loads((ROOT / "datos" / "juego.json").read_text(encoding="utf-8"))
-PUNTOS = json.loads((ROOT / "preguntas" / "SISTEMA_PUNTOS.json").read_text(encoding="utf-8"))
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 FONT_B = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 OUTPUT = ROOT / "Jenga_Cultura_General_Reglas.pdf"
+
+NOMBRE = "Jenga de Cultura General"
+
+MATERIAS = [
+    {"id": "historia", "nombre": "Historia", "color_base": "rojo", "bloques": {"1": 3, "2": 3, "3": 2}},
+    {"id": "geografia", "nombre": "Geografía", "color_base": "verde", "bloques": {"1": 3, "2": 3, "3": 2}},
+    {"id": "ciencias", "nombre": "Ciencias Naturales", "color_base": "azul", "bloques": {"1": 3, "2": 3, "3": 2}},
+    {"id": "lengua", "nombre": "Lengua y Literatura", "color_base": "violeta", "bloques": {"1": 3, "2": 3, "3": 2}},
+    {"id": "civica", "nombre": "Educación Cívica", "color_base": "naranja", "bloques": {"1": 3, "2": 3, "3": 2}},
+]
+
+EJEMPLOS = [
+    "Historia (1 pt): ¿En qué año se declaró la Independencia de Argentina?",
+    "Geografía (2 pt): ¿Qué es el Mercosur?",
+    "Ciencias (3 pt): ¿Qué es la mitosis?",
+    "Lengua (1 pt): ¿Qué es un sustantivo?",
+    "Ed. Cívica (2 pt): ¿Qué hace el Poder Judicial?",
+    "Historia (3 pt): ¿Quién fue el líder del peronismo en su origen?",
+    "Geografía (1 pt): ¿Cuál es la capital de Argentina?",
+    "Ciencias (2 pt): ¿Qué es un ecosistema?",
+]
 
 
 class ReglasPDF(FPDF):
@@ -19,11 +37,7 @@ class ReglasPDF(FPDF):
         self.set_y(-12)
         self.set_font("DejaVu", "", 8)
         self.set_text_color(120, 120, 120)
-        self.cell(
-            0, 8,
-            f"Jenga de Cultura General — Reglas  ·  Pág. {self.page_no()}",
-            align="C",
-        )
+        self.cell(0, 8, f"{NOMBRE} — Reglas  ·  Pág. {self.page_no()}", align="C")
 
 
 def section(pdf: FPDF, title: str):
@@ -38,17 +52,6 @@ def mc(pdf: FPDF, text: str, h: float = 4.6):
     pdf.multi_cell(pdf.epw, h, text)
 
 
-def load_ejemplos():
-    ejemplos = []
-    for m in DATA["materias"]:
-        for nivel in ("1", "2", "3"):
-            path = ROOT / "preguntas" / m["id"] / f"nivel-{nivel}" / "cartas.json"
-            carta = json.loads(path.read_text(encoding="utf-8"))["cartas"][0]
-            pts = PUNTOS["puntos_por_nivel"][nivel]["puntos"]
-            ejemplos.append(f"{m['nombre']} ({pts} pt): {carta['pregunta']}")
-    return ejemplos
-
-
 def main():
     pdf = ReglasPDF("P", "mm", "A4")
     pdf.set_auto_page_break(auto=True, margin=12)
@@ -57,7 +60,7 @@ def main():
     pdf.add_page()
 
     pdf.set_font("DejaVu", "B", 18)
-    pdf.cell(0, 9, DATA["nombre"], align="C", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 9, NOMBRE, align="C", new_x="LMARGIN", new_y="NEXT")
     pdf.set_font("DejaVu", "", 10)
     pdf.set_text_color(90, 90, 90)
     pdf.cell(0, 5, "Juego escolar · Argentina · 2 a 4 jugadores", align="C", new_x="LMARGIN", new_y="NEXT")
@@ -79,7 +82,7 @@ def main():
     mc(
         pdf,
         "El color identifica la materia; la saturación (claro → intenso) indica el nivel. "
-        "Nivel 1 = 1 pt · Nivel 2 = 2 pts · Nivel 3 = 3 pts.",
+        "Nivel 1 = 1 pt · Nivel 2 = 2 pts · Nivel 3 = 3 pts. Ver preguntas/SISTEMA_PUNTOS.pdf.",
     )
     col_w = [38, 22, 18, 18, 18, 18]
     pdf.set_font("DejaVu", "B", 7.5)
@@ -89,17 +92,16 @@ def main():
         pdf.cell(col_w[i], 5, h, border=1, fill=True, align="C")
     pdf.ln()
     pdf.set_font("DejaVu", "", 7.5)
-    for m in DATA["materias"]:
+    for m in MATERIAS:
         b = m["bloques"]
-        total = sum(b.values())
         pdf.cell(col_w[0], 5, m["nombre"], border=1)
         pdf.cell(col_w[1], 5, m["color_base"].capitalize(), border=1, align="C")
         pdf.cell(col_w[2], 5, str(b["1"]), border=1, align="C")
         pdf.cell(col_w[3], 5, str(b["2"]), border=1, align="C")
         pdf.cell(col_w[4], 5, str(b["3"]), border=1, align="C")
-        pdf.cell(col_w[5], 5, str(total), border=1, align="C")
+        pdf.cell(col_w[5], 5, str(sum(b.values())), border=1, align="C")
         pdf.ln()
-    mc(pdf, "Total: 40 bloques + 1 base (3D) · 60 cartas en papel (4 por materia y nivel) · 1 hoja de puntaje.")
+    mc(pdf, "Total: 40 bloques + 1 base (3D) · 60 cartas PDF · Ver datos/Materias_y_Bloques.pdf.")
     pdf.ln(0.5)
 
     section(pdf, "Reglas y puntos")
@@ -117,35 +119,29 @@ def main():
     for i, step in enumerate([
         "Elegí qué bloque sacar (como Jenga).",
         "Identificá materia (color) y nivel (saturación del color).",
-        "Robá 1 carta del mazo de esa materia y nivel.",
+        "Robá 1 carta del mazo PDF de esa materia y nivel.",
         "Respondé antes de colocar el bloque (la lee otro jugador).",
         "Colocás el bloque arriba. Siguiente jugador, sentido horario.",
     ], 1):
         mc(pdf, f"{i}. {step}", 4.4)
     pdf.ln(0.5)
 
-    section(pdf, "Estrategia e impresión 3D")
+    section(pdf, "Cartas e impresión")
     pdf.set_font("DejaVu", "", 8.5)
     mc(
         pdf,
-        "Podés elegir bloques de materias que dominés o niveles bajos (color claro) para ir seguro, "
-        "o arriesgar niveles altos (color intenso) por más puntos con más tensión física.\n\n"
-        "Imprimí cada bloque con el color y saturación indicados en datos/juego.json. "
-        "Cartas en preguntas/<materia>/nivel-<1|2|3>/cartas.json. "
-        "Modelo paramétrico en 3d/bloque.scad. Base en 3d/base.scad.",
+        "Las cartas están en preguntas/<materia>/nivel-<1|2|3>/cartas.pdf con marco tipo naipe. "
+        "Cada PDF tiene frente y dorso (2 páginas) para imprimir a doble cara y recortar.\n\n"
+        "Bloques 3D: modelos en 3d/bloque.scad y 3d/base.scad.",
     )
     pdf.ln(0.5)
 
     section(pdf, "Ejemplos de preguntas (Argentina)")
     pdf.set_font("DejaVu", "", 8)
-    ejemplos = load_ejemplos()
-    mc(pdf, " · ".join(ejemplos[:4]) + "\n" + " · ".join(ejemplos[4:8]))
+    mc(pdf, " · ".join(EJEMPLOS[:4]) + "\n" + " · ".join(EJEMPLOS[4:8]))
 
     pdf.output(str(OUTPUT))
-    pages = pdf.page_no()
-    print(f"PDF generado: {OUTPUT} ({pages} página(s))")
-    if pages > 1.5:
-        print("AVISO: supera 1,5 hojas — compactar si hace falta.")
+    print(f"PDF generado: {OUTPUT} ({pdf.page_no()} página(s))")
 
 
 if __name__ == "__main__":
