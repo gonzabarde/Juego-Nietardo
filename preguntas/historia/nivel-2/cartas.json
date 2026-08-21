@@ -1,0 +1,28 @@
+{
+  "materia_id": "historia",
+  "materia": "Historia",
+  "nivel": 2,
+  "puntos": 2,
+  "cartas": [
+    {
+      "id": 1,
+      "pregunta": "¿Qué tratado puso fin a la Primera Guerra Mundial?",
+      "respuesta": "Tratado de Versalles (1919)"
+    },
+    {
+      "id": 2,
+      "pregunta": "¿Quién lideró la Revolución de Mayo de 1810 en Buenos Aires?",
+      "respuesta": "Cornelio Saavedra (y el movimiento criollo)"
+    },
+    {
+      "id": 3,
+      "pregunta": "¿En qué año cayó el Muro de Berlín?",
+      "respuesta": "1989"
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Qué país fue aliado de Argentina en la Conquista del Desierto?",
+      "respuesta": "No hubo aliado extranjero; fue acción del Estado argentino"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ from fpdf import FPDF
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = json.loads((ROOT / "datos" / "juego.json").read_text(encoding="utf-8"))
+PUNTOS = json.loads((ROOT / "preguntas" / "SISTEMA_PUNTOS.json").read_text(encoding="utf-8"))
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 FONT_B = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 OUTPUT = ROOT / "Jenga_Cultura_General_Reglas.pdf"
@@ -35,6 +36,17 @@ def section(pdf: FPDF, title: str):
 def mc(pdf: FPDF, text: str, h: float = 4.6):
     pdf.set_x(pdf.l_margin)
     pdf.multi_cell(pdf.epw, h, text)
+
+
+def load_ejemplos():
+    ejemplos = []
+    for m in DATA["materias"]:
+        for nivel in ("1", "2", "3"):
+            path = ROOT / "preguntas" / m["id"] / f"nivel-{nivel}" / "cartas.json"
+            carta = json.loads(path.read_text(encoding="utf-8"))["cartas"][0]
+            pts = PUNTOS["puntos_por_nivel"][nivel]["puntos"]
+            ejemplos.append(f"{m['nombre']} ({pts} pt): {carta['pregunta']}")
+    return ejemplos
 
 
 def main():
@@ -119,18 +131,14 @@ def main():
         "Podés elegir bloques de materias que dominés o niveles bajos (color claro) para ir seguro, "
         "o arriesgar niveles altos (color intenso) por más puntos con más tensión física.\n\n"
         "Imprimí cada bloque con el color y saturación indicados en datos/juego.json. "
-        "Modelo paramétrico en 3d/bloque.scad. Base con el nombre del juego en 3d/base.scad.",
+        "Cartas en preguntas/<materia>/nivel-<1|2|3>/cartas.json. "
+        "Modelo paramétrico en 3d/bloque.scad. Base en 3d/base.scad.",
     )
     pdf.ln(0.5)
 
     section(pdf, "Ejemplos de preguntas (Argentina)")
     pdf.set_font("DejaVu", "", 8)
-    ejemplos = []
-    for m in DATA["materias"]:
-        mid = m["id"]
-        for nivel in ("1", "2", "3"):
-            card = DATA["preguntas"][mid][nivel][0]
-            ejemplos.append(f"{m['nombre']} n{nivel}: {card['q']}")
+    ejemplos = load_ejemplos()
     mc(pdf, " · ".join(ejemplos[:4]) + "\n" + " · ".join(ejemplos[4:8]))
 
     pdf.output(str(OUTPUT))

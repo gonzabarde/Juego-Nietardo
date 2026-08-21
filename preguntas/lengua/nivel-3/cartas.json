@@ -1,0 +1,28 @@
+{
+  "materia_id": "lengua",
+  "materia": "Lengua y Literatura",
+  "nivel": 3,
+  "puntos": 3,
+  "cartas": [
+    {
+      "id": 1,
+      "pregunta": "¿Quién escribió Cien años de soledad?",
+      "respuesta": "Gabriel García Márquez"
+    },
+    {
+      "id": 2,
+      "pregunta": "¿Qué movimiento literario lideró Rubén Darío?",
+      "respuesta": "El modernismo"
+    },
+    {
+      "id": 3,
+      "pregunta": "¿Qué es el voseo?",
+      "respuesta": "Uso de «vos» como segunda persona (muy común en Argentina)"
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Qué poeta argentino escribió Martín Fierro?",
+      "respuesta": "José Hernández"
+    }
+  ]
+}

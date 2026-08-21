@@ -1,0 +1,28 @@
+{
+  "juego": "Jenga de Cultura General",
+  "puntos_por_nivel": {
+    "1": {
+      "nombre": "Fácil",
+      "puntos": 1,
+      "saturacion": "clara",
+      "descripcion": "Bloque con color pálido de la materia"
+    },
+    "2": {
+      "nombre": "Medio",
+      "puntos": 2,
+      "saturacion": "media",
+      "descripcion": "Bloque con color intermedio de la materia"
+    },
+    "3": {
+      "nombre": "Difícil",
+      "puntos": 3,
+      "saturacion": "intensa",
+      "descripcion": "Bloque con color más oscuro/intenso de la materia"
+    }
+  },
+  "reglas": {
+    "respuesta_incorrecta": 0,
+    "torre_cae": "pierde_todos_los_puntos",
+    "colocar_bloque_si_falla": true
+  }
+}

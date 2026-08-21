@@ -1,0 +1,28 @@
+{
+  "materia_id": "civica",
+  "materia": "Educación Cívica",
+  "nivel": 2,
+  "puntos": 2,
+  "cartas": [
+    {
+      "id": 1,
+      "pregunta": "¿Qué es el sufragio universal?",
+      "respuesta": "Derecho de votar de todos los ciudadanos adultos"
+    },
+    {
+      "id": 2,
+      "pregunta": "¿Qué hace el Poder Judicial?",
+      "respuesta": "Administra justicia y aplica las leyes"
+    },
+    {
+      "id": 3,
+      "pregunta": "¿Qué son los derechos humanos?",
+      "respuesta": "Derechos básicos inherentes a toda persona"
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Qué es la laicidad del Estado argentino?",
+      "respuesta": "No hay religión oficial; Estado y culto son separados"
+    }
+  ]
+}

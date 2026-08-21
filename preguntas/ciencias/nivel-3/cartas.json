@@ -1,0 +1,28 @@
+{
+  "materia_id": "ciencias",
+  "materia": "Ciencias Naturales",
+  "nivel": 3,
+  "puntos": 3,
+  "cartas": [
+    {
+      "id": 1,
+      "pregunta": "¿Cuál es el elemento químico con símbolo Au?",
+      "respuesta": "Oro"
+    },
+    {
+      "id": 2,
+      "pregunta": "¿Qué científico propuso la ley de gravitación universal?",
+      "respuesta": "Isaac Newton"
+    },
+    {
+      "id": 3,
+      "pregunta": "¿Cuántos cromosomas tiene una célula humana normal?",
+      "respuesta": "46 (23 pares)"
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Qué es la mitosis?",
+      "respuesta": "División celular que produce dos células hijas idénticas"
+    }
+  ]
+}

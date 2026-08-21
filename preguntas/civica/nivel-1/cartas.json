@@ -1,0 +1,28 @@
+{
+  "materia_id": "civica",
+  "materia": "Educación Cívica",
+  "nivel": 1,
+  "puntos": 1,
+  "cartas": [
+    {
+      "id": 1,
+      "pregunta": "¿A qué edad se vota por primera vez en Argentina?",
+      "respuesta": "18 años (voto obligatorio entre 18 y 70)"
+    },
+    {
+      "id": 2,
+      "pregunta": "¿Cuántos poderes del Estado hay en la democracia?",
+      "respuesta": "Tres: Ejecutivo, Legislativo y Judicial"
+    },
+    {
+      "id": 3,
+      "pregunta": "¿Qué documento es la ley suprema de Argentina?",
+      "respuesta": "La Constitución Nacional"
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Qué es una democracia?",
+      "respuesta": "Sistema donde el pueblo participa en las decisiones políticas"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "materia_id": "geografia",
+  "materia": "Geografía",
+  "nivel": 1,
+  "puntos": 1,
+  "cartas": [
+    {
+      "id": 1,
+      "pregunta": "¿Cuál es la capital de Argentina?",
+      "respuesta": "Buenos Aires"
+    },
+    {
+      "id": 2,
+      "pregunta": "¿Cuántos países limitan con Argentina?",
+      "respuesta": "5 (Chile, Bolivia, Paraguay, Brasil, Uruguay)"
+    },
+    {
+      "id": 3,
+      "pregunta": "¿Qué océano baña la costa argentina?",
+      "respuesta": "El Atlántico"
+    },
+    {
+      "id": 4,
+      "pregunta": "¿Cuál es el río más largo de Argentina?",
+      "respuesta": "El Paraná"
+    }
+  ]
+}
