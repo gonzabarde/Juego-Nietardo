@@ -19,8 +19,8 @@ FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 FONT_B = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 FONT_I = FONT  # DejaVu Sans Oblique no disponible en este sistema
 
-CARD_W = 63
-CARD_H = 88
+CARD_W = 72
+CARD_H = 100
 CARD_R = 4  # esquinas redondeadas
 
 
@@ -45,8 +45,8 @@ class BasePDF(FPDF):
 
 
 def card_positions() -> list[tuple[float, float]]:
-    gap_x = 10
-    gap_y = 12
+    gap_x = 8
+    gap_y = 10
     total_w = CARD_W * 2 + gap_x
     total_h = CARD_H * 2 + gap_y
     ox = (210 - total_w) / 2
@@ -57,6 +57,14 @@ def card_positions() -> list[tuple[float, float]]:
         (ox, oy + CARD_H + gap_y),
         (ox + CARD_W + gap_x, oy + CARD_H + gap_y),
     ]
+
+
+def scale_w(value: float) -> float:
+    return value * (CARD_W / 63)
+
+
+def scale_h(value: float) -> float:
+    return value * (CARD_H / 88)
 
 
 def draw_card_frame(pdf: FPDF, x: float, y: float, rgb: tuple[int, int, int], label: str, numero: int):
@@ -88,10 +96,10 @@ def draw_card_frame(pdf: FPDF, x: float, y: float, rgb: tuple[int, int, int], la
 
     # Inicial en esquinas (como naipe)
     pdf.set_text_color(255, 255, 255)
-    pdf.set_font("DejaVu", "B", 9)
+    pdf.set_font("DejaVu", "B", 10)
     pdf.set_xy(x + 5, y + 5)
     pdf.cell(8, 6, label, align="C")
-    pdf.set_xy(x + CARD_W - 13, y + CARD_H - 11)
+    pdf.set_xy(x + CARD_W - 13, y + CARD_H - scale_h(11))
     pdf.cell(8, 6, str(numero), align="C")
 
 
@@ -99,33 +107,31 @@ def draw_card_front(pdf: FPDF, x: float, y: float, carta: dict, mazo: dict, rgb:
     draw_card_frame(pdf, x, y, rgb, label, carta["id"])
 
     pdf.set_text_color(255, 255, 255)
-    pdf.set_font("DejaVu", "B", 6.5)
+    pdf.set_font("DejaVu", "B", 7.5)
     pdf.set_xy(x + 14, y + 5)
     pdf.cell(CARD_W - 28, 6, mazo["materia"][:22], align="C")
 
     pdf.set_text_color(40, 40, 40)
-    pdf.set_font("DejaVu", "B", 7)
-    pdf.set_xy(x + 6, y + 18)
+    pdf.set_font("DejaVu", "B", 8)
+    pdf.set_xy(x + 6, y + scale_h(18))
     pdf.cell(CARD_W - 12, 5, f"Nivel {mazo['nivel']} · {mazo['puntos']} pt{'s' if mazo['puntos'] > 1 else ''}", align="C")
 
-    # Área central con marco ovalado implícito
     pdf.set_draw_color(*rgb)
     pdf.set_line_width(0.25)
-    pdf.rect(x + 8, y + 28, CARD_W - 16, CARD_H - 42)
+    pdf.rect(x + 8, y + scale_h(28), CARD_W - 16, CARD_H - scale_h(42))
 
-    pdf.set_font("DejaVu", "", 8.2)
-    pdf.set_xy(x + 10, y + 32)
-    pdf.multi_cell(CARD_W - 20, 4.2, carta["pregunta"], align="C")
+    pdf.set_font("DejaVu", "", 9.5)
+    pdf.set_xy(x + 10, y + scale_h(32))
+    pdf.multi_cell(CARD_W - 20, 4.8, carta["pregunta"], align="C")
 
-    # Respuesta chica, centrada abajo (la ve quien lee la carta)
     pdf.set_draw_color(*rgb)
     pdf.set_line_width(0.2)
-    pdf.line(x + 10, y + CARD_H - 17, x + CARD_W - 10, y + CARD_H - 17)
+    pdf.line(x + 10, y + CARD_H - scale_h(17), x + CARD_W - 10, y + CARD_H - scale_h(17))
 
-    pdf.set_font("DejaVu", "", 5.2)
+    pdf.set_font("DejaVu", "", 6)
     pdf.set_text_color(70, 70, 70)
-    pdf.set_xy(x + 6, y + CARD_H - 15)
-    pdf.multi_cell(CARD_W - 12, 2.6, carta["respuesta"], align="C")
+    pdf.set_xy(x + 6, y + CARD_H - scale_h(15))
+    pdf.multi_cell(CARD_W - 12, 3, carta["respuesta"], align="C")
 
 
 def draw_card_back(pdf: FPDF, x: float, y: float, carta: dict, mazo: dict, rgb: tuple[int, int, int], label: str):
@@ -133,16 +139,17 @@ def draw_card_back(pdf: FPDF, x: float, y: float, carta: dict, mazo: dict, rgb: 
 
     # Dorso decorativo (la respuesta va en chico abajo del frente)
     pdf.set_fill_color(min(255, rgb[0] + 190), min(255, rgb[1] + 190), min(255, rgb[2] + 190))
-    pdf.rect(x + 8, y + 18, CARD_W - 16, CARD_H - 32, style="F")
+    pdf.rect(x + 8, y + scale_h(18), CARD_W - 16, CARD_H - scale_h(32), style="F")
 
     pdf.set_draw_color(*rgb)
     pdf.set_line_width(0.2)
     cx, cy = x + CARD_W / 2, y + CARD_H / 2 - 2
+    r = scale_w(14)
     for i in range(-2, 3):
-        pdf.line(cx - 14, cy + i * 5, cx + 14, cy + i * 5)
-        pdf.line(cx + i * 5, cy - 14, cx + i * 5, cy + 14)
+        pdf.line(cx - r, cy + i * 5, cx + r, cy + i * 5)
+        pdf.line(cx + i * 5, cy - r, cx + i * 5, cy + r)
 
-    pdf.set_font("DejaVu", "B", 11)
+    pdf.set_font("DejaVu", "B", 13)
     pdf.set_text_color(*rgb)
     pdf.set_xy(x + 6, y + CARD_H / 2 - 6)
     pdf.cell(CARD_W - 12, 8, label, align="C")
@@ -191,42 +198,96 @@ def generar_sistema_puntos_pdf():
     out = ROOT / "preguntas" / "SISTEMA_PUNTOS.pdf"
     pdf = BasePDF("P", "mm", "A4")
     pdf.setup_fonts()
+    pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 
-    pdf.set_font("DejaVu", "B", 18)
-    pdf.cell(0, 12, "Sistema de puntos", align="C", new_x="LMARGIN", new_y="NEXT")
+    def titulo(text: str, size: float = 16):
+        pdf.set_font("DejaVu", "B", size)
+        pdf.set_text_color(30, 30, 30)
+        pdf.cell(0, 9, text, new_x="LMARGIN", new_y="NEXT")
+
+    def parrafo(text: str, size: float = 10.5):
+        pdf.set_font("DejaVu", "", size)
+        pdf.set_text_color(45, 45, 45)
+        pdf.set_x(pdf.l_margin)
+        pdf.multi_cell(pdf.epw, 5.5, text)
+        pdf.ln(2)
+
+    titulo("Sistema de puntajes", 20)
     pdf.set_font("DejaVu", "", 11)
-    pdf.cell(0, 8, "Jenga de Cultura General", align="C", new_x="LMARGIN", new_y="NEXT")
-    pdf.ln(6)
+    pdf.set_text_color(100, 100, 100)
+    pdf.cell(0, 7, "Jenga de Cultura General · Explicación", align="C", new_x="LMARGIN", new_y="NEXT")
+    pdf.ln(4)
+
+    parrafo(
+        "En este juego no alcanza con no tirar la torre: también sumás puntos respondiendo "
+        "preguntas de cultura general. Cuanto más difícil el bloque que saques, más puntos "
+        "podés ganar… pero también más riesgo de que se caiga la torre."
+    )
+
+    titulo("¿Cómo sé cuántos puntos vale un bloque?", 13)
+    parrafo(
+        "Cada bloque tiene un color de materia (Historia, Geografía, Ciencias, Lengua o "
+        "Educación Cívica) y una saturación del color que indica la dificultad:"
+    )
 
     rows = [
-        ("1", "Clara (color pálido)", "1 punto"),
-        ("2", "Media", "2 puntos"),
-        ("3", "Intensa (color oscuro)", "3 puntos"),
+        ("Nivel 1", "Color claro / pálido", "Pregunta fácil", "1 punto"),
+        ("Nivel 2", "Color medio", "Pregunta media", "2 puntos"),
+        ("Nivel 3", "Color intenso / oscuro", "Pregunta difícil", "3 puntos"),
     ]
-    pdf.set_font("DejaVu", "B", 10)
-    pdf.set_fill_color(240, 240, 240)
-    for h, w in [("Nivel", 25), ("Saturación del bloque", 90), ("Puntos si acertás", 55)]:
+    pdf.set_font("DejaVu", "B", 9)
+    pdf.set_fill_color(245, 240, 230)
+    col_w = [22, 42, 52, 28]
+    for h, w in zip(["Nivel", "Saturación", "Pregunta", "Puntos"], col_w):
         pdf.cell(w, 8, h, border=1, fill=True, align="C")
     pdf.ln()
-    pdf.set_font("DejaVu", "", 10)
+    pdf.set_font("DejaVu", "", 9)
     for row in rows:
-        pdf.cell(25, 8, row[0], border=1, align="C")
-        pdf.cell(90, 8, row[1], border=1)
-        pdf.cell(55, 8, row[2], border=1, align="C")
+        for val, w in zip(row, col_w):
+            pdf.cell(w, 8, val, border=1, align="C" if w < 40 else "L")
         pdf.ln()
+    pdf.ln(3)
 
-    pdf.ln(8)
-    pdf.set_font("DejaVu", "B", 12)
-    pdf.cell(0, 8, "Reglas adicionales", new_x="LMARGIN", new_y="NEXT")
-    pdf.set_font("DejaVu", "", 10)
-    for line in [
-        "• Respuesta incorrecta: 0 puntos (igual colocás el bloque).",
-        "• Torre cae: quien la tiró pierde TODOS sus puntos.",
-        "• Jugadores: de 2 a 4.",
-        "• Gana quien más puntos tenga al final de la partida.",
-    ]:
-        pdf.cell(0, 7, line, new_x="LMARGIN", new_y="NEXT")
+    titulo("¿Cómo se suman puntos en un turno?", 13)
+    parrafo(
+        "1. Sacás un bloque y mirás su materia y nivel.\n"
+        "2. Robás una carta de ese mazo.\n"
+        "3. Si respondés bien → sumás 1, 2 o 3 puntos según el nivel.\n"
+        "4. Si respondés mal → no sumás nada (0 puntos), pero igual colocás el bloque arriba.\n"
+        "5. Anotás el puntaje y pasa el turno al siguiente jugador."
+    )
+
+    titulo("Ejemplo de partida", 13)
+    parrafo(
+        "Lucas saca un bloque verde claro de Geografía (nivel 1), responde bien → +1 punto.\n"
+        "María saca un bloque rojo intenso de Historia (nivel 3), responde bien → +3 puntos.\n"
+        "Tomás saca un bloque azul medio de Ciencias (nivel 2), falla → 0 puntos.\n"
+        "Al final de varios turnos: Lucas 5 pts, María 8 pts, Tomás 3 pts."
+    )
+
+    titulo("Penalización: la torre cae", 13)
+    parrafo(
+        "La partida termina cuando la torre se cae. El jugador que la tiró pierde "
+        "TODOS sus puntos acumulados, no solo una parte. Por ejemplo: si María tenía 8 puntos "
+        "y tira la torre, queda en 0. Los demás conservan sus puntos."
+    )
+
+    titulo("¿Quién gana?", 13)
+    parrafo(
+        "Gana quien tenga más puntos después de la caída de la torre. "
+        "Pueden jugar de 2 a 4 jugadores. "
+        "Conviene anotar los puntos turno a turno en una hoja aparte."
+    )
+
+    pdf.set_font("DejaVu", "I", 9)
+    pdf.set_text_color(120, 120, 120)
+    pdf.set_x(pdf.l_margin)
+    pdf.multi_cell(
+        pdf.epw, 5,
+        "Tip estratégico: podés elegir bloques fáciles y seguros para sumar de a poco, "
+        "o arriesgar bloques difíciles arriba de la torre para sumar más rápido.",
+    )
 
     pdf.output(str(out))
     return out
